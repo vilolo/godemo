@@ -25,11 +25,8 @@ func main() {
         fmt.Println(err)
     }
 
-    res, err := db.Exec("INSERT INTO userinfo (username, departname, created) VALUES (?, ?, ?)","lily","销售","2016-06-21")
-    CheckErr(err)
-
-    fmt.Println(res)
-
+    _, err2 := db.Exec("INSERT INTO userinfo (username, departname, created) VALUES (?, ?, ?)","lily","销售","2016-06-21")
+    CheckErr(err2)
 }
 
 func CheckErr(err error){
