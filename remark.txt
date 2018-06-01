@@ -1,2 +1,8 @@
-°£°£20180531
+//mysql
 $ go get -u github.com/go-sql-driver/mysql
+
+//redis
+go get github.com/gomodule/redigo/redis
+
+//ÁºñÁ†Å
+https://code.google.com/p/mahonia/
