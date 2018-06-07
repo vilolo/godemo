@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"bufio"
 	"io/ioutil"
 	"io"
@@ -24,7 +25,62 @@ func (b *t) Test (a string) string{
 func main() {
     //test1()
     //write_file()
-    read_file()
+    //read_file()
+    //test_chan()
+    //test2()
+    test3()
+}
+
+func test3() {
+    done := make(chan struct{})
+    langs := []string{"Go", "C", "C++", "Java", "Perl", "Python"}
+    for _, l := range langs { go warrior(l, done) }
+    //for _ = range langs { <-done }
+}
+var battle = make(chan string)
+func warrior(name string, done chan struct{}) {
+    defer fmt.Println("bbbb")
+    select {
+    case opponent := <-battle:
+        fmt.Printf("%s beat %s\n", name, opponent)
+    case battle <- name:
+        // I lost :-(
+    }
+    done <- struct{}{}
+}
+
+func test2() {
+    block, done := make(chan struct{}), make(chan struct{})
+    for i := 0; i < 4; i++ {
+        go waiter(i, block, done)
+    }
+    time.Sleep(5 * time.Second)
+    close(block)
+    for i := 0; i < 4; i++ {
+        <-done
+    }
+}
+func waiter(i int, block, done chan struct{}) {
+    time.Sleep(1e9)
+    fmt.Println(i, "waiting...")
+    <-block
+    fmt.Println(i, "done!")
+    done <- struct{}{}
+}
+
+func test_chan(){
+    ch := make(chan int)
+    tesc_chan_in(ch)
+    tesc_chan_out(ch)
+
+    time.Sleep(1e9)
+}
+func tesc_chan_in(c chan<- int){
+    c <- 123
+}
+func tesc_chan_out(c <-chan int){
+    v := <-c
+    fmt.Println(v)
 }
 
 func check(e error) {
