@@ -54,7 +54,8 @@ func get(url string){
 
 	//reflect.TypeOf(time.Now().Unix())
 	//2020-12-08T09:08:57.715Z
-	conf.Timestamp = time.Now().Format("2006-01-02T15:04:05.000Z")
+	//2021-05-13T14:28:50.171Z
+	conf.Timestamp = time.Now().UTC().Format("2006-01-02T15:04:05.000Z")
 	fmt.Println(conf.Timestamp + "GET" + url)
 
 	sign := hmacSha256(conf.Timestamp + "GET" + url, conf.SecretKey)
