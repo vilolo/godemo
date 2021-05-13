@@ -36,11 +36,6 @@ func main() {
         fmt.Println("Error:", err)
     }
 
-	//reflect.TypeOf(time.Now().Unix())
-	conf.Timestamp = string(time.Now().UTC())
-
-	fmt.Println(conf)
-
 	get("api/v5/account/account-position-risk")
 
 	// http.HandleFunc("/test", test)
@@ -56,6 +51,11 @@ func get(url string){
 	if err != nil {
         fmt.Println(err)
     }
+
+	//reflect.TypeOf(time.Now().Unix())
+	//2020-12-08T09:08:57.715Z
+	conf.Timestamp = time.Now().Format("2006-01-02T15:04:05.000Z")
+	fmt.Println(conf.Timestamp + "GET" + url)
 
 	sign := hmacSha256(conf.Timestamp + "GET" + url, conf.SecretKey)
 
