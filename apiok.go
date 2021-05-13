@@ -23,7 +23,7 @@ type configuration struct {
 }
 
 var conf = configuration{}
-var baseUrl = "https://www.okex.win/"
+var baseUrl = "https://www.okex.win"
 
 func main() {
 	fmt.Println("hello, world!")
@@ -36,7 +36,7 @@ func main() {
         fmt.Println("Error:", err)
     }
 
-	get("api/v5/account/account-position-risk")
+	get("/api/v5/account/account-position-risk")
 
 	// http.HandleFunc("/test", test)
 	http.ListenAndServe("0.0.0.0:8089", nil)
