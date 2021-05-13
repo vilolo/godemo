@@ -12,7 +12,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"encoding/hex"
+	// "encoding/hex"
 )
 
 type configuration struct {
@@ -56,9 +56,13 @@ func get(url string){
 	//2020-12-08T09:08:57.715Z
 	//2021-05-13T14:28:50.171Z
 	conf.Timestamp = time.Now().UTC().Format("2006-01-02T15:04:05.000Z")
-	fmt.Println(conf.Timestamp + "GET" + url)
 
 	sign := hmacSha256(conf.Timestamp + "GET" + url, conf.SecretKey)
+
+	//leaVRETrtaoEQ3yI9qEtI1CZ82ikZ4xSG5Kj8gnl3uw=
+	//M2UwZThkNmQ5NjM1YjYzMzg1OWJhZWU5ZjVlNzI4OTEzN2NmNWNjYmZmOGJiN2MyNGQ0ZDcwMzNkN2UwZDE0Mw==
+
+	fmt.Println(sign)
 
 	//增加header选项
     reqest.Header.Add("OK-ACCESS-KEY", conf.APIKey)
@@ -78,8 +82,8 @@ func get(url string){
 func hmacSha256(data string, secret string) string {
     h := hmac.New(sha256.New, []byte(secret))
     h.Write([]byte(data))
-	sha := hex.EncodeToString(h.Sum(nil))
-	return base64.StdEncoding.EncodeToString([]byte(sha))
+	// sha := hex.EncodeToString(h.Sum(nil))
+	return base64.StdEncoding.EncodeToString([]byte(h.Sum(nil)))
 }
 
 
