@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -14,11 +15,11 @@ import (
 
 func main() {
 	fmt.Println("shop tools")
-	itemid := "10727937149"
-	keyword := "book"
+	itemid := "11721678694"
+	keyword := url.QueryEscape("เครื่องพิมพ์ฉลาก")
 	limit := 100
 	newest := 0
-	maxNewest := 0 //PC60一页
+	maxNewest := 1200 //PC60一页
 	url := "https://th.xiapibuy.com/api/v4/search/search_items?by=relevancy&keyword=" + keyword + "&limit=" + strconv.Itoa(limit) + "&newest=" + strconv.Itoa(newest) + "&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2"
 
 	for i := newest; i <= maxNewest; i = i + limit {
@@ -37,7 +38,7 @@ func handleContent(url string, itemid string, newest int, keyword string) bool {
 	s1 := md5.Sum([]byte("55b03" + paramMd5 + "55b03"))
 	k := string(fmt.Sprintf("%x", s1))
 
-	fmt.Println(k)
+	// fmt.Println(k)
 
 	// $header  = array(
 	// 	'if-none-match-: 55b03-'.$k,
@@ -57,18 +58,24 @@ func handleContent(url string, itemid string, newest int, keyword string) bool {
 	res, _ := json.Marshal(result)
 	strData := string(res)
 	// fmt.Println(strData)
+	// utils.WriteFile("test", strData)
 	isContain := strings.Contains(strData, itemid)
 	if isContain {
 		regex := regexp.MustCompile(`"itemid":\d+,"label`)
 		arr := regex.FindAllString(strData, -1)
+
+		regex2 := regexp.MustCompile(`"image":"(.*?)"`)
+		arr2 := regex2.FindAllStringSubmatch(strData, -1)
+
 		rank := 0
 		for i, v := range arr {
 			if strings.Contains(v, itemid) {
 				rank = newest + i + 1
 				fmt.Println("排名：", rank)
+				fmt.Println("图片：https://cf.shopee.co.th/file/" + arr2[i][1] + "_tn")
 			}
 		}
-		fmt.Println("https://th.xiapibuy.com/search?keyword=book&page=" + strconv.Itoa((rank-1)/60+1))
+		fmt.Println("https://th.xiapibuy.com/search?keyword=" + keyword + "&page=" + strconv.Itoa((rank-1)/60))
 		return true
 	}
 	return false
