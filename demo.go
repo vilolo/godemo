@@ -30,8 +30,7 @@ func main() {
 	//read_file()
 	//test_chan()
 	//test2()
-	// test3()
-	testHttpService()
+	test3()
 }
 
 func test3() {
