@@ -1,0 +1,8 @@
+新建项目文件夹
+执行go mod init
+执行go get fyne.io/fyne/v2
+创建main.go
+执行go mod tidy
+
+windiws 安装 gcc
+https://blog.csdn.net/Duan_zhang_/article/details/123021118
