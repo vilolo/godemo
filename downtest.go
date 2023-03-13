@@ -77,7 +77,14 @@ func test2() {
 		"/uploads/img-desc/axial_machine_videocover.jpg",
 		"/uploads/img-desc/conveyor1.jpg"}
 	for i := 0; i < len(list); i++ {
-		download("G:/work/test/wen", "https://adm.smtfan.com"+list[i], "")
+		idx := strings.LastIndex(list[i], "/")
+		dir := "G:/work/test/wen" + list[i][:idx]
+		err := checkAndCreateDir(dir)
+		if err != nil {
+			fmt.Println(err)
+		}
+		dir += "/"
+		download(dir, "https://adm.smtfan.com"+list[i], "")
 	}
 }
 
