@@ -10,6 +10,10 @@ import (
 
 func main() {
 	fmt.Println("start")
+	test2()
+}
+
+func test1() {
 	basePath := "G:/work/test/"
 	list := [][]string{{"aa", "bb", "https://qiniu.tangzhijiao.com/闲鱼小店_store_logo.jpg"},
 		{"11", "cc", "https://qiniu.tangzhijiao.com/闲鱼小店_store_logo.jpg"}}
@@ -31,6 +35,49 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
+	}
+}
+
+func test2() {
+	list := []string{"/uploads/article/timg.jpg",
+		"/uploads/article/radial_machine.png",
+		"/uploads/article/u=1666882005,4218080920&fm=26&gp=0.jpg",
+		"/uploads/article/QQ截图20200813111156.png",
+		"/uploads/article/axial_machine.jpg",
+		"/uploads/article/conveyor1.jpg",
+		"/uploads/article/loaderNunloader.jpg",
+		"/uploads/article/mini_reject_conveyor.jpg",
+		"/uploads/article/feeder.png",
+		"/uploads/article/yamaha_nozzle4.jpg",
+		"/uploads/article/samsung_nozzle1.jpg",
+		"/uploads/logo/logo.png",
+		"/uploads/img-desc/new_radial_banner.jpg",
+		"/uploads/img-desc/AA_banner.jpg",
+		"/uploads/img-desc/xiaoJUKI_nozzle2.png",
+		"/uploads/img-desc/SMT.jpg",
+		"/uploads/img-desc/field_machine2.jpg",
+		"/uploads/img-desc/field_machine.jpg",
+		"/uploads/img-desc/radial_feeder2.png",
+		"/uploads/img-desc/W12c.png",
+		"/uploads/img-desc/nozzles.jpg",
+		"/uploads/img-desc/xiao_1head_&_4_guide_jaw_clipping.jpg",
+		"/uploads/img-desc/小_DSC7373.png",
+		"/uploads/img-desc/BHSA.jpg",
+		"/uploads/img-desc/1xiao_DSC6150.jpg",
+		"/uploads/img-desc/小banner.jpg",
+		"/uploads/img-desc/service.png",
+		"/uploads/img-desc/field_stack_feeder.jpg",
+		"/uploads/img-desc/bowl_feeder.jpg",
+		"/uploads/img-desc/JUKI_NOZZLES.jpg",
+		"/uploads/img-desc/Gripper.jpg",
+		"/uploads/img-desc/lable_feeder.png",
+		"/uploads/img-desc/lable_feeder.png",
+		"/uploads/img-desc/board_handling2.jpg",
+		"/uploads/img-desc/radial_feeder2.png",
+		"/uploads/img-desc/axial_machine_videocover.jpg",
+		"/uploads/img-desc/conveyor1.jpg"}
+	for i := 0; i < len(list); i++ {
+		download("G:/work/test/wen", "https://adm.smtfan.com"+list[i], "")
 	}
 }
 

@@ -12,7 +12,7 @@ new Vue({
 	
 	created: function() {
 		var self = this;
-		this.ws = new WebSocket('ws://' + window.location.host + '/ws');
+		this.ws = new WebSocket('ws://127.0.0.1:9999/ws');
 		this.ws.addEventListener('message', function(e) {
 			var msg = JSON.parse(e.data);
 			self.chatContent += '<div class="chip">'
