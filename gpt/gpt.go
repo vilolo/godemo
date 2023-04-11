@@ -32,7 +32,7 @@ func main() {
 		if r.Method == "OPTIONS" {
 			return
 		}
-		// fmt.Println("=============================================")
+		fmt.Println("=============================================")
 		var url string = "https://api.openai.com/v1/completions"
 
 		json.NewDecoder(r.Body).Decode(&chatParam)
@@ -92,7 +92,7 @@ func main() {
 		if r.Method == "OPTIONS" {
 			return
 		}
-		// fmt.Println("=============================================")
+		fmt.Println("=============================================")
 		var url string = "https://api.openai.com/v1/completions"
 
 		json.NewDecoder(r.Body).Decode(&completionsParam)
@@ -129,9 +129,8 @@ func main() {
 				continue
 			}
 			// fmt.Fprintf(rw, "%s", eventData)
-			// eventData = `data: {"id":"chatcmpl-744OIi2u1F8f9K7Xm1S5C1ferP6XC","object":"chat.completion.chunk","created":1681204546,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"role":"assistant"},"index":0,"finish_reason":null}]}`
 			fmt.Fprintf(rw, "%s\n\n", eventData)
-			// fmt.Println(eventData)
+			fmt.Println(eventData)
 			flusher, ok := rw.(http.Flusher)
 			if ok {
 				flusher.Flush()
