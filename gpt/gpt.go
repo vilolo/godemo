@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -17,8 +18,14 @@ var chatParam struct {
 	Msg string `json:"msg"`
 }
 
+var imageParam struct {
+	Prompt string `json:"prompt"`
+}
+
 func main() {
 	fmt.Println("start")
+
+	key := "xxx"
 
 	http.HandleFunc("/chat", func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Set("Content-Type", "text/event-stream")
@@ -32,8 +39,8 @@ func main() {
 		if r.Method == "OPTIONS" {
 			return
 		}
-		fmt.Println("=============================================")
-		var url string = "https://api.openai.com/v1/completions"
+		// fmt.Println("=============================================")
+		var url string = "https://api.openai.com/v1/chat/completions"
 
 		json.NewDecoder(r.Body).Decode(&chatParam)
 
@@ -51,7 +58,7 @@ func main() {
 			return
 		}
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", "Bearer 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")
+		req.Header.Set("Authorization", "Bearer "+key)
 		resp, err := client.Do(req)
 		if err != nil {
 			fmt.Println("resp ===", err)
@@ -92,7 +99,7 @@ func main() {
 		if r.Method == "OPTIONS" {
 			return
 		}
-		fmt.Println("=============================================")
+		// fmt.Println("=============================================")
 		var url string = "https://api.openai.com/v1/completions"
 
 		json.NewDecoder(r.Body).Decode(&completionsParam)
@@ -112,7 +119,7 @@ func main() {
 			return
 		}
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", "Bearer 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")
+		req.Header.Set("Authorization", "Bearer "+key)
 		resp, err := client.Do(req)
 		if err != nil {
 			fmt.Println("resp ===", err)
@@ -130,7 +137,7 @@ func main() {
 			}
 			// fmt.Fprintf(rw, "%s", eventData)
 			fmt.Fprintf(rw, "%s\n\n", eventData)
-			fmt.Println(eventData)
+			// fmt.Println(eventData)
 			flusher, ok := rw.(http.Flusher)
 			if ok {
 				flusher.Flush()
@@ -140,6 +147,53 @@ func main() {
 		}
 
 		// fmt.Fprintf(rw, "娃哈哈")
+	})
+
+	http.HandleFunc("/image", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Header().Set("Content-Type", "application/json")
+		rw.Header().Set("Cache-Control", "no-cache")
+		rw.Header().Set("Access-Control-Allow-Origin", "*")
+		rw.Header().Set("Access-Control-Allow-Methods", "POST,GET,OPTIONS,PUT,DELETE")
+		rw.Header().Set("Access-Control-Allow-Headers", "*")
+		rw.Header().Set("Connection", "keep-alive")
+		rw.Header().Set("Keep-Alive", "timeout=10")
+
+		if r.Method == "OPTIONS" {
+			return
+		}
+		// fmt.Println("=============================================")
+		var url string = "https://api.openai.com/v1/images/generations"
+
+		json.NewDecoder(r.Body).Decode(&imageParam)
+
+		body := fmt.Sprintf(`{
+			"size": "1024x1024",
+			"n":2,
+			"prompt": "%s"
+		}`, imageParam.Prompt)
+		var jsonStr = []byte(body)
+
+		client := &http.Client{}
+		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+		if err != nil {
+			fmt.Println("req ===", err)
+			return
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", "Bearer "+key)
+		resp, err := client.Do(req)
+		if err != nil {
+			fmt.Println("resp ===", err)
+			return
+		}
+		defer resp.Body.Close()
+		data, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println("readAll ===", err)
+			return
+		}
+
+		fmt.Fprintf(rw, "%s", string(data))
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
